@@ -1,0 +1,11 @@
+{
+  "server": {
+    "baseDir": "./",
+    "middleware": [
+      {
+        "route": "\\.wasm$",
+        "handle": "./middleware.js"
+      }
+    ]
+  }
+}

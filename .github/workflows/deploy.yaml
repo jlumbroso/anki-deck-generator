@@ -1,0 +1,30 @@
+name: 🚀 Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # or your default branch name
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📦 Checkout Code
+      uses: actions/checkout@v2
+
+    - name: 🌐 Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'  # or your preferred Node.js version
+
+    - name: 🛠️ Install Dependencies
+      run: npm install
+
+    # This step will handle the deployment to GitHub Pages.
+    - name: 🚢 Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@4.1.0
+      with:
+        branch: gh-pages
+        folder: .  # This will deploy the entire directory content including node_modules
+        clean: true
