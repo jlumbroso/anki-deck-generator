@@ -11,15 +11,18 @@ jobs:
 
     steps:
     - name: 📦 Checkout Code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: 🌐 Setup Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: '16'  # or your preferred Node.js version
 
     - name: 🛠️ Install Dependencies
       run: npm install
+    
+    - name: 🗑️ Remove .gitignore
+      run: rm .gitignore
 
     # This step will handle the deployment to GitHub Pages.
     - name: 🚢 Deploy to GitHub Pages
