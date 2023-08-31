@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anki Deck Generator</title>
+    <!-- Load required libraries -->
+    <script src="node_modules/sql.js/dist/sql-wasm.js"></script>
+    <script src="node_modules/file-saver/dist/FileSaver.min.js"></script>
+    <script src="node_modules/jszip/dist/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/krmanik/genanki-js/dist/genanki.js"></script>
+</head>
+<body>
+
+<input type="file" id="jsonInput" accept=".json" onchange="handleFile()">
+<button onclick="generateDeck()">Generate and Download Anki Deck</button>
+
+<script>
+    let studentData = null;
+
+    // The `initSqlJs` function is globally provided by all of the main dist files if loaded in the browser.
+    const config = {
+        locateFile: filename => `node_modules/sql.js/dist/${filename}`
+    };
+
+    function stringToHex(str) {
+        let result = '';
+        for (let i = 0; i < str.length; i++) {
+            result += str.charCodeAt(i).toString(16);
+        }
+        return result;
+    }
+
+    let SQL;
+    initSqlJs(config).then(function (sql) {
+        // Create the database
+        SQL = sql;
+    });
+
+    function handleFile() {
+        const fileInput = document.getElementById('jsonInput');
+        const file = fileInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                studentData = JSON.parse(event.target.result);
+            };
+            reader.readAsText(file);
+        }
+    }
+    function formatName(student) {
+        const first = student.First || '';
+        const last = (student.Last || '').toUpperCase();
+        return `${first} ${last}`;
+    }
+
+    function generateDeck() {
+        if (!studentData) {
+            alert("Please upload a valid JSON file first.");
+            return;
+        }
+
+        const model = new Model({
+            name: "Student Flashcards",
+            id: "1380120064",
+            flds: [
+                { name: "Name" },
+                { name: "Image" }
+            ],
+            req: [
+                [0, "all", [0]],
+                [1, "all", [1]]
+            ],
+            tmpls: [
+                {
+                    name: "Card 1: Name to Image",
+                    qfmt: "{{Name}}",
+                    afmt: "{{FrontSide}}<hr id=answer>{{Image}}",
+                },
+                {
+                    name: "Card 2: Image to Name",
+                    qfmt: "{{Image}}",
+                    afmt: "{{FrontSide}}<hr id=answer>{{Name}}",
+                }
+            ],
+        });
+
+        const sectionIds = studentData.map(student => student.sectionInformation && student.sectionInformation.sectionIdWithTerm).filter(Boolean);
+        const uniqueSortedSectionIds = [...new Set(sectionIds)].sort();
+        const hexString = stringToHex(uniqueSortedSectionIds.join(''));
+        const deckId = parseInt(hexString, 16) % (10**10);
+        const deckTitle = `Penn ${uniqueSortedSectionIds.join(', ')}`;
+        const deck = new Deck(deckId, deckTitle);
+
+        for (let student of studentData) {
+            if (!student.Name || !student.imageBlob || !student.sectionInformation || !student.sectionInformation.sectionIdWithTerm) {
+                console.warn("Skipping student entry due to missing key:", student);
+                continue;
+            }
+
+            const formattedName = formatName(student);
+            const image = `<img src="${student.imageBlob}" />`;
+
+            deck.addNote(model.note([formattedName, image]));
+        }
+
+        const package = new Package();
+        package.addDeck(deck);
+        const packageName = `${uniqueSortedSectionIds.join('-')}.apkg`;
+        package.writeToFile(packageName);
+
+    }
+
+</script>
+
+</body>
+</html>
