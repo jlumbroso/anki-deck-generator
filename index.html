@@ -72,7 +72,8 @@
 
     <div class="container">
         <h1>Anki Deck Generator</h1>
-        <p>Generate Anki flashcards from a JSON file containing student data. To begin, upload your JSON file and then click on the "Generate and Download Anki Deck" button.</p>
+        <p>Generate Anki flashcards from a JSON file containing student data that is exported by the <a href="https://github.com/jlumbroso/penn-classlist-scraper">Penn Class List Scraper</a>.
+        To begin, upload your JSON file and then click on the "Generate and Download Anki Deck" button.</p>
         <input type="file" id="jsonInput" accept=".json" onchange="handleFile()">
         <button onclick="generateDeck()">Generate and Download Anki Deck</button>
 
