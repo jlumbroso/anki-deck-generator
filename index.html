@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,11 +10,76 @@
     <script src="node_modules/file-saver/dist/FileSaver.min.js"></script>
     <script src="node_modules/jszip/dist/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/krmanik/genanki-js/dist/genanki.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        a.github-ribbon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        footer {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
 </head>
+
 <body>
 
-<input type="file" id="jsonInput" accept=".json" onchange="handleFile()">
-<button onclick="generateDeck()">Generate and Download Anki Deck</button>
+    <a href="https://github.com/jlumbroso/anki-deck-generator" class="github-ribbon">
+        <img decoding="async" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_left_green_007200.png?resize=149%2C149" alt="Fork me on GitHub">
+    </a>
+
+    <div class="container">
+        <h1>Anki Deck Generator</h1>
+        <p>Generate Anki flashcards from a JSON file containing student data. To begin, upload your JSON file and then click on the "Generate and Download Anki Deck" button.</p>
+        <input type="file" id="jsonInput" accept=".json" onchange="handleFile()">
+        <button onclick="generateDeck()">Generate and Download Anki Deck</button>
+
+        <footer>
+            Created by <a href="https://directory.seas.upenn.edu/jeremie-o-lumbroso/">Jérémie Lumbroso</a> | <a href="https://github.com/jlumbroso/anki-deck-generator">GitHub Repository</a>
+        </footer>
+    </div>
 
 <script>
     let studentData = null;
