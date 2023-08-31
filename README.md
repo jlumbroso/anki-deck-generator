@@ -58,19 +58,19 @@ To begin, export a JSON file from the class lists. Start by installing [the Penn
 
 For more details on the available options, run:
 
-    ```bash
-    $ anki_deck_generator --help
-    Usage: anki_deck_generator.py [OPTIONS] [JSON_FILES]...
+```bash
+$ anki_deck_generator --help
+Usage: anki_deck_generator.py [OPTIONS] [JSON_FILES]...
 
-    Options:
-    --output FILE       Path to save the generated Anki deck.
-    --separate-decks    Generate separate decks for each JSON file.
-    --include-as-blob   Embed images directly into the Anki deck. If not set,
-                        images will be saved as external files.
-    --name-format TEXT  Format for displaying names on the flashcards. Default
-                        is "{FormattedName}".
-    --help              Show this message and exit.
-    ```
+Options:
+--output FILE       Path to save the generated Anki deck.
+--separate-decks    Generate separate decks for each JSON file.
+--include-as-blob   Embed images directly into the Anki deck. If not set,
+                    images will be saved as external files.
+--name-format TEXT  Format for displaying names on the flashcards. Default
+                    is "{FormattedName}".
+--help              Show this message and exit.
+```
 
 ## 💻 Setup for Local Development of the Website
 
@@ -114,17 +114,17 @@ This is only necessary for local installation. You can access this tool online.
 
 The JSON file should contain an array of student data objects. Each object should have the following format:
     
-    ```json
-    {
-        "First": "Jeyna",
-        "Last": "Doe",
-        "imageBlob": "data:image/jpeg;base64,...",
-        "sectionInformation": {
-            "sectionIdWithTerm": "CIS-5000-001-202330"
-        }
-        /* ... other fields */
+```json
+{
+    "First": "Jeyna",
+    "Last": "Doe",
+    "imageBlob": "data:image/jpeg;base64,...",
+    "sectionInformation": {
+        "sectionIdWithTerm": "CIS-5000-001-202330"
     }
-    ``` 
+    /* ... other fields */
+}
+``` 
 
 ## 🤝 Contributing
 
