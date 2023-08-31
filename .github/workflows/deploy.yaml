@@ -23,6 +23,9 @@ jobs:
     
     - name: 🗑️ Remove .gitignore
       run: rm .gitignore
+    
+    - name: 🚫 Create .nojekyll file
+      run: touch .nojekyll
 
     # This step will handle the deployment to GitHub Pages.
     - name: 🚢 Deploy to GitHub Pages
