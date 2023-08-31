@@ -1,0 +1,17 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[packages]
+click = "*"
+colorama = "*"
+genanki = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"
+
+[scripts]
+anki_deck_generator = "python -m anki_deck_generator"
