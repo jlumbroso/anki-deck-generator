@@ -14,7 +14,7 @@ def format_name(student):
     last = student.get('Last', '').upper()
     return f"{first} {last}"
 
-def generate_single_deck(students, section_name, output_filename, include_as_blob=True, name_format=NAME_FORMAT):
+def generate_single_deck(students, section_name, output_filename, include_as_blob=False, name_format=NAME_FORMAT):
     # Define the Anki model with two card types
     my_model = genanki.Model(
         1380120064,
@@ -37,14 +37,15 @@ def generate_single_deck(students, section_name, output_filename, include_as_blo
         ],
         css="""
             .card {
-                font-family: arial;
+                font-family: Arial;
                 font-size: 20px;
                 text-align: center;
                 color: black;
                 background-color: white;
             }
             img {
-                width: 200%;  # Set the width to 200% of the original size
+                height:  300px;
+                width: 236px;
             }
         """
     )
@@ -93,7 +94,7 @@ def generate_single_deck(students, section_name, output_filename, include_as_blo
 @click.argument('json_files', nargs=-1, type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True))
 @click.option('--output', default=None, type=click.Path(file_okay=True, dir_okay=False, writable=True), help='Path to save the generated Anki deck.')
 @click.option('--separate-decks', is_flag=True, help='Generate separate decks for each JSON file.')
-@click.option('--include-as-blob', is_flag=True, default=True, help='Embed images directly into the Anki deck. If not set, images will be saved as external files.')
+@click.option('--include-as-blob', is_flag=True, default=False, help='Embed images directly into the Anki deck. If not set, images will be saved as external files.')
 @click.option('--name-format', default="{FormattedName}", help='Format for displaying names on the flashcards. Default is "{FormattedName}".')
 def generate_anki_deck(json_files, output, separate_decks, include_as_blob, name_format):
     # Check if input files are provided
