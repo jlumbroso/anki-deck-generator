@@ -35,6 +35,10 @@
             margin-bottom: 20px;
         }
 
+        li {
+            padding-bottom: 5px;
+        }
+
         button {
             display: block;
             width: 100%;
@@ -44,6 +48,10 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+        }
+
+        input {
+            margin-bottom: 20px;
         }
 
         button:hover {
@@ -71,16 +79,50 @@
     </a>
 
     <div class="container">
-        <h1>Anki Deck Generator</h1>
-        <p>Generate Anki flashcards from a JSON file containing student data that is exported by the <a href="https://github.com/jlumbroso/penn-classlist-scraper">Penn Class List Scraper</a> (a Chrome extension you can install to export data from the <a href="https://courses.at.upenn.edu/">Penn Class Lists</a> in JSON format).
-        To begin, upload your JSON file and then click on the "Generate and Download Anki Deck" button.</p>
+        <h1>Anki Facecard Generator for Penn Instructors</h1>
+        <p>Welcome to the Anki Facecard Generator. This tool, crafted by <a href="https://directory.seas.upenn.edu/jeremie-o-lumbroso/">Jérémie Lumbroso</a>, allows you to create interactive Anki flashcards using student data. Follow the steps below to generate your personalized Anki deck.</p>
+
+        <p><a href="https://apps.ankiweb.net/">Anki</a> is a free, open-source, versatile flashcard tool that harnesses the power of spaced repetition, available across all platforms including macOS, Windows, Linux, iOS, Android, and browsers, ensuring effortless access for every Penn faculty member.</p>
+        
+        <h2>How to Create Your Personalized Anki Deck:</h2>
+        <ol>
+            <li><strong>Install the Penn Class List Scraper</strong>:
+                <ul>
+                    <li>Download the <a href="https://github.com/jlumbroso/penn-classlist-scraper/releases/latest">Penn Class List Scraper</a> Chrome extension ZIP file.</li>
+                    <li>Open Chrome, go to Extensions, enable "Developer mode", and drag & drop the ZIP to install.</li>
+                </ul>
+            </li>
+            <li><strong>Extract Your Class List Data</strong>:
+                <ul>
+                    <li>Visit <a href="https://courses.at.upenn.edu/">Penn Class List</a>, select "Class Lists", ensure "Show Pics" is checked, and choose your section.</li>
+                    <li>Click the Penn Class List Scraper extension icon to extract data. Once done, it'll download a JSON file.</li>
+                </ul>
+            </li>
+            <li><strong>Upload Your Data Here</strong>:
+                <ul>
+                    <li>Click on the "Choose File" button below and select the downloaded JSON file.</li>
+                </ul>
+            </li>
+            <li><strong>Generate Your Deck</strong>:
+                <ul>
+                    <li>Click on the "Generate and Download Anki Deck" button below. Once processed, a download link will appear.</li>
+                </ul>
+            </li>
+            <li><strong>Download & Use</strong>:
+                <ul>
+                    <li>Download the `.apkg` file and import it into Anki to start familiarizing yourself with your students!</li>
+                </ul>
+            </li>
+        </ol>
+        
         <input type="file" id="jsonInput" accept=".json" onchange="handleFile()">
         <button onclick="generateDeck()">Generate and Download Anki Deck</button>
-
+    
         <footer>
-            Created by <a href="https://directory.seas.upenn.edu/jeremie-o-lumbroso/">Jérémie Lumbroso</a> | <a href="https://github.com/jlumbroso/anki-deck-generator">GitHub Repository</a>
+            Crafted with ❤️ by <a href="https://directory.seas.upenn.edu/jeremie-o-lumbroso/">Jérémie Lumbroso</a> | Explore on <a href="https://github.com/jlumbroso/anki-deck-generator">GitHub</a>
         </footer>
     </div>
+    
 
 <script>
     let studentData = null;
@@ -150,6 +192,18 @@
                     afmt: "{{FrontSide}}<hr id=answer>{{Name}}",
                 }
             ],
+            css: `
+                .card {
+                    font-family: Arial;
+                    font-size: 20px;
+                    text-align: center;
+                    color: black;
+                    background-color: white;
+                }
+                img {
+                    width: 200%;
+                }
+            `
         });
 
         const sectionIds = studentData.map(student => student.sectionInformation && student.sectionInformation.sectionIdWithTerm).filter(Boolean);
