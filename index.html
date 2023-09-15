@@ -226,7 +226,8 @@
             const formattedName = formatName(student);
             const image = `<img src="${student.imageBlob}" />`;
 
-            deck.addNote(model.note([formattedName, image]));
+            // Use "adgsf.penn.{studentId}" as guid for stability of reimport
+            deck.addNote(model.note([formattedName, image], guid=`adgsf.penn.${student.studentId}`));
         }
 
         const package = new Package();
