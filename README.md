@@ -8,6 +8,10 @@ This project provides a web-based tool and a Python CLI tool to generate Anki de
 
 To begin, export a JSON file from the class lists. Start by installing [the Penn Class List Scraper](https://github.com/jlumbroso/penn-classlist-scraper) and then navigate to the class lists on [`courses.at.upenn.edu`](https://courses.at.upenn.edu/). After obtaining the JSON file, this tool can generate an Anki deck with cards for each student.
 
+You don't need to install anything, [you can create your deck online](https://jlumbroso.github.io/anki-deck-generator/).
+
+If you prefer, you can also install the Python client for more complex use-cases. Read-on if so!
+
 ## ✨ Features
 
 * Upload a JSON file containing student data.
@@ -15,6 +19,8 @@ To begin, export a JSON file from the class lists. Start by installing [the Penn
 * Download the generated `.apkg` file for importing into Anki.
 
 ## 🐍 Setup of Python Client
+
+This step is only necessary if you want to use the Python client. You can [access this tool online](https://jlumbroso.github.io/anki-deck-generator/).
 
 ### 📋 Prerequisites
 
@@ -74,7 +80,7 @@ Options:
 
 ## 💻 Setup for Local Development of the Website
 
-This is only necessary for local installation. You can access this tool online.
+This is only necessary for local installation. You can [access this tool online](https://jlumbroso.github.io/anki-deck-generator/).
 
 ### 📋 Prerequisites
 

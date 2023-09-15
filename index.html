@@ -118,7 +118,18 @@
                 </ul>
             </li>
         </ol>
-        
+
+        <h3>Card Display Preference:</h3>
+        <p>Choose your preferred card display order. Some people prefer to be prompted first with the image, to guess the name (and later see the opposite note, which is name to guess image), and others prefer the notes be swapped, that is, the note where the name appears to guess the photo first.</p>
+        <label>
+            <input type="radio" name="displayPreference" value="nameFirst" checked> Display name first
+        </label>
+        <br>
+        <label>
+            <input type="radio" name="displayPreference" value="photoFirst"> Display photo first
+        </label>
+        <br><br>
+    
         <input type="file" id="jsonInput" accept=".json" onchange="handleFile()">
         <button onclick="generateDeck()">Generate and Download Anki Deck</button>
     
@@ -173,18 +184,14 @@
             return;
         }
 
-        const model = new Model({
-            name: "Student Flashcards",
-            id: "1380120064",
-            flds: [
-                { name: "Name" },
-                { name: "Image" }
-            ],
-            req: [
-                [0, "all", [0]],
-                [1, "all", [1]]
-            ],
-            tmpls: [
+        const displayPreference = document.querySelector('input[name="displayPreference"]:checked').value;
+        let templates;
+        let modelId, modelName;
+
+        if (displayPreference === "nameFirst") {
+            modelId = "1380120064";
+            modelName = "Student Flashcards (Name First)"
+            templates = [
                 {
                     name: "Card 1: Name to Image",
                     qfmt: "{{Name}}",
@@ -195,7 +202,36 @@
                     qfmt: "{{Image}}",
                     afmt: "{{FrontSide}}<hr id=answer>{{Name}}",
                 }
+            ];
+        } else {
+            modelId = "2380120065"; // Changed model id for the different preference
+            modelName = "Student Flashcards (Image First)"
+            templates = [
+                {
+                    name: "Card 1: Image to Name",
+                    qfmt: "{{Image}}",
+                    afmt: "{{FrontSide}}<hr id=answer>{{Name}}",
+                },
+                {
+                    name: "Card 2: Name to Image",
+                    qfmt: "{{Name}}",
+                    afmt: "{{FrontSide}}<hr id=answer>{{Image}}",
+                }
+            ];
+        }
+
+        const model = new Model({
+            name: modelName,
+            id: modelId,
+            flds: [
+                { name: "Name" },
+                { name: "Image" }
             ],
+            req: [
+                [0, "all", [0]],
+                [1, "all", [1]]
+            ],
+            tmpls: templates,
             css: `
                 .card {
                     font-family: Arial;
@@ -205,7 +241,8 @@
                     background-color: white;
                 }
                 img {
-                    width: 200%;
+                    height: 300px;
+                    width: 236px;
                 }
             `
         });

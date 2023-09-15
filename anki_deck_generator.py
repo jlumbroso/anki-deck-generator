@@ -14,16 +14,27 @@ def format_name(student):
     last = student.get('Last', '').upper()
     return f"{first} {last}"
 
-def generate_single_deck(students, section_name, output_filename, include_as_blob=False, name_format=NAME_FORMAT):
+def generate_single_deck(students, section_name, output_filename, include_as_blob=False, name_format=NAME_FORMAT, image_first=False):
     # Define the Anki model with two card types
-    my_model = genanki.Model(
-        1380120064,
-        'Student Flashcards',
-        fields=[
-            {'name': 'Name'},
-            {'name': 'Image'},
-        ],
-        templates=[
+    if image_first:
+        model_id = 2380120065
+        model_name = "Student Flashcards (Image First)"
+        templates = [
+            {
+                'name': 'Card 1: Image to Name',
+                'qfmt': '{{Image}}',
+                'afmt': '{{FrontSide}}<hr id="answer">{{Name}}',
+            },
+            {
+                'name': 'Card 2: Name to Image',
+                'qfmt': '{{Name}}',
+                'afmt': '{{FrontSide}}<hr id="answer">{{Image}}',
+            }
+        ]
+    else:
+        model_id = 1380120064
+        model_name = "Student Flashcards (Name First)"
+        templates = [
             {
                 'name': 'Card 1: Name to Image',
                 'qfmt': '{{Name}}',
@@ -34,7 +45,16 @@ def generate_single_deck(students, section_name, output_filename, include_as_blo
                 'qfmt': '{{Image}}',
                 'afmt': '{{FrontSide}}<hr id="answer">{{Name}}',
             }
+        ]
+
+    my_model = genanki.Model(
+        model_id,
+        model_name,
+        fields=[
+            {'name': 'Name'},
+            {'name': 'Image'},
         ],
+        templates=templates,
         css="""
             .card {
                 font-family: Arial;
@@ -44,7 +64,7 @@ def generate_single_deck(students, section_name, output_filename, include_as_blo
                 background-color: white;
             }
             img {
-                height:  300px;
+                height: 300px;
                 width: 236px;
             }
         """
@@ -98,7 +118,8 @@ def generate_single_deck(students, section_name, output_filename, include_as_blo
 @click.option('--separate-decks', is_flag=True, help='Generate separate decks for each JSON file.')
 @click.option('--include-as-blob', is_flag=True, default=False, help='Embed images directly into the Anki deck. If not set, images will be saved as external files.')
 @click.option('--name-format', default="{FormattedName}", help='Format for displaying names on the flashcards. Default is "{FormattedName}".')
-def generate_anki_deck(json_files, output, separate_decks, include_as_blob, name_format):
+@click.option('--image-first', is_flag=True, default=False, help='Swap the order of the cards to display the image first.')
+def generate_anki_deck(json_files, output, separate_decks, include_as_blob, name_format, image_first):
     # Check if input files are provided
     if not json_files:
         click.secho("Error: No input files provided.", fg="red")
@@ -123,7 +144,7 @@ def generate_anki_deck(json_files, output, separate_decks, include_as_blob, name
                 output_filename = f"{base_output}_{section}.apkg"
             else:
                 output_filename = f"{section}.apkg"
-            generate_single_deck(students, section, output_filename, include_as_blob, name_format)
+            generate_single_deck(students, section, output_filename, include_as_blob, name_format, image_first=image_first)
     else:
         unique_section_ids = "_".join(sorted(sections.keys()))
         if output:
@@ -131,7 +152,7 @@ def generate_anki_deck(json_files, output, separate_decks, include_as_blob, name
             output_filename = f"{base_output}.apkg"
         else:
             output_filename = f"{unique_section_ids}.apkg"
-        generate_single_deck(all_students, unique_section_ids, output_filename, include_as_blob, name_format)
+        generate_single_deck(all_students, unique_section_ids, output_filename, include_as_blob, name_format, image_first=image_first)
 
 if __name__ == "__main__":
     try:
