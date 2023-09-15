@@ -79,6 +79,8 @@ def generate_single_deck(students, section_name, output_filename, include_as_blo
 
         my_note = genanki.Note(
             model=my_model,
+            # build a GUID based on "anki deck generator student flashcards", Penn (the school) and the student ID
+            guid="adgsf.penn.{studentId}".format(**student),
             fields=[formatted_name, image])
         my_deck.add_note(my_note)
 
